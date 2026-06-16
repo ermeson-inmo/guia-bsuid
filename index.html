@@ -385,15 +385,10 @@ p + p { margin-top: 10px; }
           <div class="card" style="margin-bottom:0">
             <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O que é feito</div>
             <ul class="check-list">
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>No início do fluxo, uma ação captura o metadata da mensagem
-                <div class="sub-list"><span>Variável: <code>{{input.message@metadata}}</code></span></div>
-              </span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Um script extrai o BSUID do metadata
-                <div class="sub-list"><span>Campo lido: <code>#wa.bsuid</code></span></div>
-              </span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>O BSUID é gravado no perfil do contato via ação "Definir contato" do Builder</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>O campo de telefone existente é <strong>mantido</strong> — o BSUID é adicionado como campo complementar</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Gestores passam a realizar <strong>disparos de mensagens por BSUID</strong> diretamente no Blip Desk — a busca de contatos por BSUID ainda está pendente de implementação nativa pela Blip</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização do script de identificação de contatos para compatibilidade com o novo modelo da Meta</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Garantia de que o campo de telefone passa a ser preenchido corretamente — com o número quando disponível, ou vazio quando não compartilhado</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Os dados existentes no perfil do contato são preservados — nenhuma informação anterior é perdida</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Gestores passam a poder realizar <strong>disparos de mensagens por BSUID</strong> diretamente no Blip Desk</span></li>
             </ul>
           </div>
           <div class="card" style="margin-bottom:0;background:var(--red-light);border-color:#FCA5A5">
@@ -432,10 +427,11 @@ p + p { margin-top: 10px; }
         </div>
         <div class="card">
           <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O que é feito</div>
-          <div class="step"><div class="step-num">1</div><div><div class="step-title">Extração da lista de telefones</div><div class="step-text">Os telefones são exportados da base do cliente — CRM, Blip ou planilha.</div></div></div>
-          <div class="step"><div class="step-num">2</div><div><div class="step-title">Consulta em lote ao endpoint da Blip</div><div class="step-text">Um script envia os números em grupos de até 100 por vez (limite da API), com controle automático de velocidade. Em caso de limite atingido (<code>código 38</code>), o script tenta novamente com intervalo progressivo.</div></div></div>
-          <div class="step"><div class="step-num">3</div><div><div class="step-title">Gravação dos BSUIDs retornados</div><div class="step-text">Os dados (BSUID, ID Blip, telefone, data da última interação) são gravados de volta: no Document Store do Blip, no CRM via campo customizado ou em planilha.</div></div></div>
-          <div class="step"><div class="step-num">4</div><div><div class="step-title">Relatório de cobertura</div><div class="step-text">Entrega via <strong>Google Sheets</strong> com total consultado, mapeados com sucesso e números sem BSUID retornado — para o cliente saber exatamente qual é o gap e poder utilizá-lo como base para o Pacote 3.</div></div></div>
+          <ul class="check-list">
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Consulta da base existente do cliente para identificar o BSUID de cada contato já cadastrado</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Enriquecimento dos registros no CRM com o novo identificador, sem necessidade de disparar mensagens ou interromper operações</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Entrega de relatório com o resultado do mapeamento: quem foi identificado e quem permanece sem BSUID — servindo de base para o Pacote 3, se necessário</span></li>
+            </ul></div>
         </div>
         <div class="alert alert-amber">
           <span class="alert-icon">⚠</span>
@@ -474,64 +470,21 @@ p + p { margin-top: 10px; }
         </div>
         <div class="grid-2">
           <div class="card" style="margin-bottom:0">
-            <div class="card-title"><span class="ct-dot" style="background:var(--amber)"></span>Nos fluxos (Builder/Studio)</div>
+            <div class="card-title"><span class="ct-dot" style="background:var(--amber)"></span>Nos fluxos de conversa</div>
             <ul class="check-list">
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Varredura dos fluxos impactados com base no alerta do portal Blip</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Classificação de cada ponto: <em>bloqueante</em>, <em>degradante</em> ou <em>cosmético</em></span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adição de lógica de fallback:
-                <div class="sub-list">
-                  <span>Telefone existe? → usa normalmente</span>
-                  <span>Não existe? → usa BSUID no lugar</span>
-                  <span>Precisa absolutamente? → pede ao usuário</span>
-                </div>
-              </span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização para variáveis nativas: <code>contact.whatsapp_bsuid</code></span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Remoção de lógicas que leem identidade esperando sempre um número</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Testes simulando usuário sem telefone para validar os fallbacks</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Análise de todos os fluxos ativos para identificar os pontos impactados pela mudança</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adaptação dos fluxos para que continuem funcionando independentemente de o usuário compartilhar ou não o telefone</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Validação das alterações com testes antes de qualquer mudança em produção</span></li>
             </ul>
           </div>
           <div class="card" style="margin-bottom:0">
-            <div class="card-title"><span class="ct-dot" style="background:#711cca"></span>Nas integrações externas (CRM/API)</div>
+            <div class="card-title"><span class="ct-dot" style="background:#0052CC"></span>Nas integrações externas (CRM)</div>
             <ul class="check-list">
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Mapeamento dos pontos de integração que recebem variáveis de identidade</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Criação do campo <code>whatsapp_bsuid</code> no CRM (RD Station ou equivalente)</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização da lógica de gravação: BSUID salvo no CRM a cada interação</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização da busca: prioriza BSUID, usa telefone como alternativa</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Relatório técnico com todos os pontos alterados, para o time de TI</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adaptação da integração com o CRM para que o novo identificador passe a ser salvo a cada nova interação</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização da lógica de busca para priorizar o BSUID, mantendo o telefone como alternativa quando disponível</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Entrega de relatório com todos os pontos alterados para registro e acompanhamento</span></li>
             </ul>
           </div>
-        </div>
-        <div class="card" style="margin-top:16px;background:var(--red-light);border-color:#FCA5A5">
-          <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
-          <div class="grid-2" style="margin-bottom:0">
-            <ul class="check-list">
-              <li><span class="ci" style="color:var(--red)">✕</span><span>Migração de dados históricos no CRM</span></li>
-              <li><span class="ci" style="color:var(--red)">✕</span><span>Desenvolvimento de integrações novas não relacionadas à transição</span></li>
-            </ul>
-            <ul class="check-list">
-              <li><span class="ci" style="color:var(--red)">✕</span><span>Suporte além de 5 dias úteis após entrega<br><span style="font-size:12px;color:var(--muted)">(coberto por plano recorrente)</span></span></li>
-            </ul>
-          </div>
-        </div>
-        <button class="btn-next" onclick="goTo('p3')">Pacote 3 →</button>
-      </div>
-    </div>
-
-    <!-- PACOTE 3 -->
-    <div class="page" id="page-p3">
-      <div class="page-hero" style="background:#6B1A1A">
-        <div class="hero-bg-num">3</div>
-        <div class="hero-eyebrow">Pacote 3 · Uso seletivo</div>
-        <div class="hero-title">Disparo cirúrgico para cobertura de gaps</div>
-        <div class="hero-sub">Para segmentos prioritários que o endpoint não conseguiu mapear.</div>
-      </div>
-      <div class="page-body">
-        <div class="info-row">
-          
-          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1 dia útil</div><div class="ic-sub">para configuração</div></div>
-          <div class="info-cell"><div class="ic-label">Custo extra</div><div class="ic-value" style="color:var(--red)">Variável</div><div class="ic-sub">custo do disparo repassado</div></div>
-          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Pacotes 0, 1 e 2</div><div class="ic-sub">todos concluídos</div></div>
-          <div class="info-cell"><div class="ic-label">Investimento</div><div class="ic-value" style="color:var(--navy)">A consultar</div></div>
         </div>
         <div class="alert alert-amber">
           <span class="alert-icon">⚠</span>
@@ -549,12 +502,10 @@ p + p { margin-top: 10px; }
           <div class="card" style="margin-bottom:0">
             <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O que é feito</div>
             <ul class="check-list">
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Segmentação dos usuários sem BSUID retornado no Pacote 1</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Definição do conteúdo do disparo com o cliente — precisa ter valor real para o usuário</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Upload da lista de contatos sem BSUID (via Google Sheets) diretamente no Growth do Blip para disparo manual</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Configuração do fluxo de captura: BSUID extraído e gravado automaticamente quando o usuário responde</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Gravação dos BSUIDs capturados na base (CRM, Document Store ou planilha)</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Relatório pós-disparo: cobertura adicional obtida vs. total enviado</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Identificação dos contatos que permanecem sem BSUID após o Pacote 1 e definição do segmento prioritário para o disparo</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Alinhamento com o cliente sobre o conteúdo da mensagem — o disparo precisa ter valor real para o destinatário</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Execução do disparo e captura automática do BSUID dos usuários que responderem</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Entrega de relatório com o resultado: cobertura adicional obtida e contatos que permaneceram sem retorno</span></li>
             </ul>
           </div>
           <div class="card" style="margin-bottom:0;background:var(--red-light);border-color:#FCA5A5">
@@ -635,7 +586,7 @@ p + p { margin-top: 10px; }
           <div class="gloss-item"><div class="gloss-acronym">Fallback</div><div><div class="gloss-full">Plano alternativo automático</div><div class="gloss-desc">Quando o sistema tenta usar uma informação e não encontra, o fallback é o comportamento alternativo. Exemplo: "se não existe telefone, usa o BSUID; se não existe BSUID, pede ao usuário". Torna o sistema resiliente à ausência de dados.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">Rollout</div><div><div class="gloss-full">Implantação gradual de uma mudança</div><div class="gloss-desc">A Meta não ativa os usernames para todos de uma vez — faz em fases, por região e perfil de usuário. No Brasil, o rollout de usernames começa em agosto de 2026.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">Builder / Studio</div><div><div class="gloss-full">Ferramentas de criação de fluxos do Blip</div><div class="gloss-desc">Ambientes dentro da plataforma Blip onde os fluxos de conversa são criados e editados. É onde ficam os blocos, as condições, os scripts e as ações — incluindo a ação "Definir contato" usada para salvar variáveis no perfil do usuário.</div></div></div>
-          <div class="gloss-item"><div class="gloss-acronym">Rate limit</div><div><div class="gloss-full">Limite de velocidade de requisições</div><div class="gloss-desc">A API da Blip tem um limite de quantas consultas podem ser feitas por segundo. Se ultrapassado, retorna erro código 38. Por isso o mapeamento em batch exige controle de throughput e retry com intervalo progressivo.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Rate limit</div><div><div class="gloss-full">Limite de velocidade de requisições</div><div class="gloss-desc">A API da Blip tem um limite de quantas consultas podem ser feitas por segundo. Quando esse limite é atingido, as requisições precisam ser repetidas com um intervalo de espera. Por isso o mapeamento em lote exige controle de cadência nas chamadas.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">BM</div><div><div class="gloss-full">Business Manager — Portfólio Empresarial da Meta</div><div class="gloss-desc">Conta empresarial no ecossistema Meta que agrupa páginas, números de WhatsApp e contas de anúncio. O BSUID é definido no nível do BM — por isso o mesmo usuário tem BSUIDs diferentes para empresas em BMs diferentes.</div></div></div>
         </div>
       </div>
