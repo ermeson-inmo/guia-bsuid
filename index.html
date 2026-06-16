@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Transição WhatsApp — BSUID</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #3D0A72;
+  --navy-mid: #711cca;
+  --mint: #00C48C;
+  --mint-light: #E0F9F2;
+  --ice: #F4F7FC;
+  --slate: #4A5568;
+  --muted: #7A8899;
+  --border: #D6E0EF;
+  --white: #FFFFFF;
+  --amber: #F59E0B;
+  --amber-light: #FEF3DC;
+  --red: #DC2626;
+  --red-light: #FEE2E2;
+  --green: #059669;
+  --green-light: #D1FAE5;
+}
+body { font-family: Calibri, Arial, sans-serif; background: var(--ice); color: #1a2332; }
+#app { display: flex; height: 100vh; overflow: hidden; }
+
+/* SIDEBAR */
+#sidebar {
+  width: 230px; flex-shrink: 0; background: var(--navy);
+  display: flex; flex-direction: column; overflow-y: auto;
+}
+.sidebar-logo { padding: 20px 18px 16px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.sidebar-logo .logo-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.04em; text-transform: uppercase; }
+.sidebar-logo .logo-sub { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 3px; }
+.nav-section-label { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.1em; padding: 16px 18px 6px; }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 18px; cursor: pointer; font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 400; border-left: 3px solid transparent; transition: all 0.15s; user-select: none; }
+.nav-item:hover { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.9); }
+.nav-item.active { background: rgba(0,196,140,0.12); color: var(--mint); border-left-color: var(--mint); font-weight: 600; }
+.nav-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
+.nav-item.active .nav-num { background: var(--mint); color: var(--navy); }
+.nav-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.18); flex-shrink: 0; }
+.nav-item.active .nav-dot { background: var(--mint); }
+
+/* MAIN */
+#main { flex: 1; overflow-y: auto; }
+.page { display: none; min-height: 100%; }
+.page.active { display: block; }
+
+/* HERO */
+.page-hero { background: var(--navy); padding: 36px 44px 32px; position: relative; overflow: hidden; }
+.hero-eyebrow { font-size: 11px; font-weight: 700; color: var(--mint); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+.hero-title { font-size: 30px; font-weight: 700; color: #fff; line-height: 1.2; }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.55); margin-top: 8px; max-width: 600px; line-height: 1.5; }
+.hero-bg-num { position: absolute; right: 30px; top: -10px; font-size: 140px; font-weight: 700; color: rgba(255,255,255,0.04); line-height: 1; pointer-events: none; }
+
+/* PAGE BODY */
+.page-body { padding: 32px 44px 48px; }
+
+/* CARD */
+.card { background: #fff; border-radius: 12px; border: 1px solid var(--border); padding: 24px 28px; margin-bottom: 20px; }
+.card-title { font-size: 12px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.ct-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* GRID */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+
+/* CHECK LIST */
+.check-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.check-list li { display: flex; gap: 10px; font-size: 14px; color: var(--slate); line-height: 1.5; align-items: flex-start; }
+.ci { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.sub-list { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+.sub-list span { display: flex; gap: 6px; font-size: 12px; color: var(--muted); }
+.sub-list span::before { content: "→"; flex-shrink: 0; }
+
+/* BADGE */
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.badge-mint { background: var(--mint-light); color: #00805C; }
+.badge-navy { background: rgba(61,10,114,0.1); color: var(--navy); }
+.badge-amber { background: var(--amber-light); color: #92610A; }
+.badge-red { background: var(--red-light); color: var(--red); }
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-gray { background: #EEF1F5; color: var(--muted); }
+
+/* ALERT */
+.alert { border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; display: flex; gap: 14px; align-items: flex-start; }
+.alert-amber { background: var(--amber-light); border: 1px solid #F8C963; }
+.alert-red { background: var(--red-light); border: 1px solid #FCA5A5; }
+.alert-mint { background: var(--mint-light); border: 1px solid #6EE7C7; }
+.alert-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.alert-title { font-size: 13px; font-weight: 700; color: #1a2332; margin-bottom: 4px; }
+.alert-text { font-size: 13px; color: var(--slate); line-height: 1.55; }
+
+/* INFO ROW */
+.info-row { display: flex; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+.info-cell { flex: 1; padding: 14px 18px; border-right: 1px solid var(--border); }
+.info-cell:last-child { border-right: none; }
+.ic-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.ic-value { font-size: 14px; font-weight: 600; color: var(--navy); }
+.ic-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* DIVIDER */
+hr.divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+/* STEP */
+.step { display: flex; gap: 14px; margin-bottom: 14px; }
+.step-num { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.step-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.step-text { font-size: 13px; color: var(--slate); line-height: 1.5; }
+
+/* ID TABLE */
+.id-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.id-table th { background: var(--navy); color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; text-align: left; padding: 10px 14px; text-transform: uppercase; letter-spacing: 0.06em; }
+.id-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; color: var(--slate); }
+.id-table tr:last-child td { border-bottom: none; }
+.id-table tr:hover td { background: var(--ice); }
+.id-name { font-weight: 700; color: var(--navy); font-size: 14px; }
+.id-acronym { font-size: 11px; color: var(--muted); }
+
+/* COMBO TABLE */
+.combo-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.combo-table th { background: var(--navy-mid); color: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; text-align: left; padding: 10px 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+.combo-table td { padding: 14px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--slate); line-height: 1.5; }
+.combo-table tr:nth-child(even) td { background: var(--ice); }
+.combo-table tr:last-child td { border-bottom: none; }
+
+/* GLOSSARY */
+.gloss-item { padding: 18px 22px; border-bottom: 1px solid var(--border); display: flex; gap: 24px; align-items: flex-start; }
+.gloss-item:last-child { border-bottom: none; }
+.gloss-acronym { font-size: 20px; font-weight: 700; color: var(--navy); min-width: 120px; flex-shrink: 0; }
+.gloss-full { font-size: 11px; font-weight: 700; color: var(--mint); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 5px; }
+.gloss-desc { font-size: 13px; color: var(--slate); line-height: 1.6; }
+
+/* TIMELINE */
+.timeline { display: flex; flex-direction: column; gap: 0; }
+.tl-item { display: flex; gap: 16px; padding-bottom: 24px; position: relative; }
+.tl-item:not(:last-child)::before { content: ''; position: absolute; left: 14px; top: 30px; width: 2px; height: calc(100% - 10px); background: var(--border); }
+.tl-dot { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; z-index: 1; }
+.tl-date { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 3px; }
+.tl-title { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+.tl-desc { font-size: 13px; color: var(--slate); line-height: 1.5; }
+.badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+
+/* CODE */
+code { background: #EEF2FF; color: #3B3F8C; font-family: 'Courier New', monospace; font-size: 12px; padding: 1px 6px; border-radius: 4px; }
+
+/* BUTTON */
+.btn-next { background: var(--navy); color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; display: block; margin-left: auto; margin-top: 8px; }
+.btn-next:hover { background: var(--navy-mid); }
+
+p { font-size: 14px; color: var(--slate); line-height: 1.6; }
+p + p { margin-top: 10px; }
+
+@media (max-width: 700px) {
+  #sidebar { width: 50px; }
+  .sidebar-logo .logo-title, .sidebar-logo .logo-sub, .nav-section-label, .nav-item span:not(.nav-num):not(.nav-dot) { display: none; }
+  .page-body { padding: 20px 16px 40px; }
+  .page-hero { padding: 24px 16px 20px; }
+  .hero-title { font-size: 22px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .info-row { flex-direction: column; }
+  .info-cell { border-right: none; border-bottom: 1px solid var(--border); }
+  .combo-table { font-size: 12px; }
+  .gloss-item { flex-direction: column; gap: 8px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-title">Guia de Transição</div>
+      <div class="logo-sub">WhatsApp · Meta · Blip</div>
+    </div>
+
+    <div class="nav-section-label">Visão geral</div>
+    <div class="nav-item active" onclick="goTo('intro')" id="nav-intro"><span class="nav-dot"></span><span>O que está mudando</span></div>
+    <div class="nav-item" onclick="goTo('ids')" id="nav-ids"><span class="nav-dot"></span><span>Os identificadores</span></div>
+    <div class="nav-item" onclick="goTo('timeline')" id="nav-timeline"><span class="nav-dot"></span><span>Cronograma</span></div>
+
+    <div class="nav-section-label">Pacotes de serviço</div>
+    <div class="nav-item" onclick="goTo('p0')" id="nav-p0"><span class="nav-num">0</span><span>Variável de contato</span></div>
+    <div class="nav-item" onclick="goTo('p1')" id="nav-p1"><span class="nav-num">1</span><span>Mapeamento de base</span></div>
+    <div class="nav-item" onclick="goTo('p2')" id="nav-p2"><span class="nav-num">2</span><span>Fluxos e integrações</span></div>
+    <div class="nav-item" onclick="goTo('p3')" id="nav-p3"><span class="nav-num">3</span><span>Disparo cirúrgico</span></div>
+
+    <div class="nav-section-label">Referência</div>
+    <div class="nav-item" onclick="goTo('combos')" id="nav-combos"><span class="nav-dot"></span><span>Perfis e combos</span></div>
+    <div class="nav-item" onclick="goTo('glossary')" id="nav-glossary"><span class="nav-dot"></span><span>Glossário</span></div>
+  </nav>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- INTRO -->
+    <div class="page active" id="page-intro">
+      <div class="page-hero">
+        <div class="hero-eyebrow">Contexto</div>
+        <div class="hero-title">O que está mudando no WhatsApp</div>
+        <div class="hero-sub">Uma mudança histórica na forma como empresas identificam seus clientes na plataforma.</div>
+      </div>
+      <div class="page-body">
+        <div class="card">
+          <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O cenário atual</div>
+          <p>Hoje, quando um cliente fala com sua empresa pelo WhatsApp, o sistema identifica ele pelo <strong>número de telefone</strong>. Esse número é a "chave" que conecta o usuário ao histórico de atendimento, ao CRM e a todos os fluxos automatizados.</p>
+          <p style="margin-top:10px">A <strong>Meta</strong> (empresa dona do WhatsApp) está mudando isso. Usuários podem criar um <strong>@username</strong> e escolher <em>não compartilhar</em> o número de telefone com empresas. Para esses usuários, o sistema precisa de um novo identificador.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card" style="margin-bottom:0;border-left:4px solid var(--red)">
+            <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que pode parar de funcionar</div>
+            <ul class="check-list">
+              <li><span class="ci">✕</span><span>Fluxos que capturam o telefone automaticamente — podem receber campo vazio</span></li>
+              <li><span class="ci">✕</span><span>Busca de clientes no CRM por número — pode não encontrar ninguém</span></li>
+              <li><span class="ci">✕</span><span>Disparos que dependem do telefone — podem falhar silenciosamente</span></li>
+              <li><span class="ci">✕</span><span>Duplicação de contatos — o mesmo cliente aparecendo duas vezes</span></li>
+            </ul>
+          </div>
+          <div class="card" style="margin-bottom:0;border-left:4px solid var(--mint)">
+            <div class="card-title" style="color:#00805C"><span class="ct-dot" style="background:var(--mint)"></span>O que garante a continuidade</div>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adotar o <strong>BSUID</strong> como identificador principal — presente em 100% das interações</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Mapear a base existente enquanto telefone e BSUID ainda chegam juntos</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adaptar fluxos e integrações com lógica de fallback antes de agosto</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Salvar o BSUID no perfil de cada contato para consultas futuras</span></li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top:20px"></div>
+        <div class="alert alert-amber">
+          <span class="alert-icon">⚠</span>
+          <div>
+            <div class="alert-title">Por que agir agora?</div>
+            <div class="alert-text">Existe uma <strong>janela de coexistência</strong> — um período em que o telefone e o BSUID chegam juntos nas interações. Quando essa janela fechar, usuários sem telefone chegam sem nenhuma referência anterior. Quanto mais cedo o mapeamento for feito, maior a cobertura da base.</div>
+          </div>
+        </div>
+        <button class="btn-next" onclick="goTo('ids')">Ver os identificadores →</button>
+      </div>
+    </div>
+
+    <!-- IDS -->
+    <div class="page" id="page-ids">
+      <div class="page-hero">
+        <div class="hero-eyebrow">Identificadores</div>
+        <div class="hero-title">Os novos tipos de ID do WhatsApp</div>
+        <div class="hero-sub">Cada usuário pode ter até 5 identificadores distintos. Entender cada um é essencial para saber o que fazer.</div>
+      </div>
+      <div class="page-body">
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="id-table">
+            <thead>
+              <tr>
+                <th style="width:18%">Identificador</th>
+                <th style="width:20%">O que é</th>
+                <th style="width:15%">Disponibilidade</th>
+                <th style="width:22%">Para que serve</th>
+                <th style="width:25%">Atenção</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="id-name">Número de telefone</div><div class="id-acronym">Phone Number / PN</div><span class="badge badge-gray" style="margin-top:6px;display:inline-block">Legado</span></td>
+                <td>O número de celular do usuário, como sempre foi usado até hoje.</td>
+                <td><span class="badge badge-amber">Opcional</span><br><span style="font-size:12px;color:var(--muted);margin-top:4px;display:block">Depende da privacidade do usuário</span></td>
+                <td>Identificação do cliente, envio de mensagens, busca no CRM.</td>
+                <td>Pode deixar de ser compartilhado. Não pode ser o único identificador a partir de agosto.</td>
+              </tr>
+              <tr>
+                <td><div class="id-name">BSUID</div><div class="id-acronym">Business-Scoped User ID</div><span class="badge badge-mint" style="margin-top:6px;display:inline-block">Novo primário ✦</span></td>
+                <td>Código único criado pela Meta para identificar o usuário <em>dentro da sua empresa</em>. O mesmo usuário tem BSUIDs diferentes para empresas diferentes.</td>
+                <td><span class="badge badge-green">Obrigatório</span><br><span style="font-size:12px;color:var(--muted);margin-top:4px;display:block">Presente em 100% das interações</span></td>
+                <td>Identificação principal, envio de mensagens, persistência do histórico de atendimento.</td>
+                <td>Substitui o telefone como chave principal. Já está disponível nas interações — é necessário começar a salvá-lo.</td>
+              </tr>
+              <tr>
+                <td><div class="id-name">GUID</div><div class="id-acronym">ID Blip interno</div><span class="badge badge-navy" style="margin-top:6px;display:inline-block">Interno Blip</span></td>
+                <td>Código interno gerado pela Blip quando o usuário não compartilha o telefone.</td>
+                <td><span class="badge badge-green">Garantido</span><br><span style="font-size:12px;color:var(--muted);margin-top:4px;display:block">Gerado automaticamente</span></td>
+                <td>Manter identificação dentro do Blip quando o telefone está ausente.</td>
+                <td>É interno — não funciona para buscar o cliente em sistemas externos como CRM.</td>
+              </tr>
+              <tr>
+                <td><div class="id-name">@Username</div><div class="id-acronym">Nome público do usuário</div><span class="badge badge-navy" style="margin-top:6px;display:inline-block">Público</span></td>
+                <td>Apelido público escolhido pelo usuário, como @joaosilva.</td>
+                <td><span class="badge badge-amber">Opcional</span><br><span style="font-size:12px;color:var(--muted);margin-top:4px;display:block">O usuário escolhe adotar</span></td>
+                <td>Descoberta pública. Permite iniciar conversa sem precisar do número da empresa.</td>
+                <td style="color:var(--red);font-weight:600">Não pode ser usado para enviar mensagens via sistema. É apenas para descoberta.</td>
+              </tr>
+              <tr>
+                <td><div class="id-name">Parent BSUID</div><div class="id-acronym">BSUID hierárquico</div><span class="badge badge-gray" style="margin-top:6px;display:inline-block">Em breve</span></td>
+                <td>Versão do BSUID que conecta diferentes contas de uma mesma organização.</td>
+                <td><span class="badge badge-gray">A definir</span></td>
+                <td>Identificação entre múltiplas empresas do mesmo grupo econômico.</td>
+                <td>Detalhes ainda sendo divulgados pela Meta. Variável <code>contact.parent_bsuid</code> já existe no Blip.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-mint">
+          <span class="alert-icon">💡</span>
+          <div>
+            <div class="alert-title">Como ler o BSUID na prática</div>
+            <div class="alert-text">O BSUID tem formato como <code>BR.11815799212886844830</code>. O prefixo indica o país. Cada empresa recebe um BSUID diferente para o mesmo usuário — o BSUID do seu cliente na <em>sua</em> empresa não é o mesmo que ele teria em outra empresa.</div>
+          </div>
+        </div>
+        <button class="btn-next" onclick="goTo('timeline')">Ver o cronograma →</button>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="page" id="page-timeline">
+      <div class="page-hero">
+        <div class="hero-eyebrow">Cronograma</div>
+        <div class="hero-title">O que acontece e quando</div>
+        <div class="hero-sub">O rollout é gradual — mas as datas-chave já estão definidas.</div>
+      </div>
+      <div class="page-body">
+        <div class="card">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--mint);color:#fff">✓</div>
+              <div>
+                <div class="tl-date">Abril — Junho 2026 · <span style="color:var(--mint)">Janela atual</span></div>
+                <div class="tl-title">BSUIDs chegam junto com o telefone</div>
+                <div class="tl-desc">Este é o momento mais valioso para mapear sua base. Telefone e BSUID chegam juntos nas interações — dá para construir a equivalência sem custo adicional.</div>
+                <div class="badge-row"><span class="badge badge-mint">Mapear base agora</span><span class="badge badge-navy">Salvar BSUID no contato</span></div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--red);color:#fff;font-size:11px">!</div>
+              <div>
+                <div class="tl-date">1º de Junho 2026 · <span style="color:var(--red)">Data já passou</span></div>
+                <div class="tl-title">Data de virada da Blip — suporte nativo ao GUID</div>
+                <div class="tl-desc">A plataforma Blip já suporta criação de contatos via GUID sem dependência do telefone. Fluxos que leem o campo de identidade esperando sempre um número podem já estar quebrando silenciosamente.</div>
+                <div class="badge-row"><span class="badge badge-red">Prazo crítico atingido</span><span class="badge badge-amber">Revisar fluxos urgente</span></div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:var(--navy-mid);color:#fff;font-size:12px">→</div>
+              <div>
+                <div class="tl-date">Agosto 2026</div>
+                <div class="tl-title">Usernames disponíveis globalmente</div>
+                <div class="tl-desc">A adoção de @usernames no Brasil escala. A proporção de usuários sem telefone cresce significativamente. Fluxos e integrações não adaptados começam a apresentar falhas em volume crescente.</div>
+                <div class="badge-row"><span class="badge badge-gray">Meta final de adaptação</span></div>
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot" style="background:#7A8899;color:#fff;font-size:14px">∞</div>
+              <div>
+                <div class="tl-date">Pós-agosto · Monitoramento contínuo</div>
+                <div class="tl-title">Rollout estabiliza — base continua mudando</div>
+                <div class="tl-desc">Mesmo após agosto, a proporção de usuários sem telefone continuará crescendo gradualmente. Sistemas precisam de monitoramento para garantir que novos fluxos criados não reincidam nos padrões antigos.</div>
+                <div class="badge-row"><span class="badge badge-gray">Suporte recorrente recomendado</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="btn-next" onclick="goTo('p0')">Ver os pacotes de serviço →</button>
+      </div>
+    </div>
+
+    <!-- PACOTE 0 -->
+    <div class="page" id="page-p0">
+      <div class="page-hero" style="background:#3D0A72">
+        <div class="hero-bg-num">0</div>
+        <div class="hero-eyebrow">Pacote 0 · Pré-requisito para todos</div>
+        <div class="hero-title">Atualização de variável de contato</div>
+        <div class="hero-sub">Salvar o BSUID no perfil de cada contato — o ponto de partida para tudo mais.</div>
+      </div>
+      <div class="page-body">
+        <div class="info-row">
+          
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">Meio dia por bot</div></div>
+          <div class="info-cell"><div class="ic-label">Indicado para</div><div class="ic-value">Todos os clientes</div><div class="ic-sub">com fluxo ativo no Blip</div></div>
+          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Acesso ao Builder</div><div class="ic-sub">ambiente do bot</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O problema que este pacote resolve</div>
+          <p>Hoje, o fluxo salva o <strong>telefone</strong> no perfil do contato para que gestores possam encontrar clientes pelo número. Com a mudança, usuários sem telefone terão um campo vazio — e ninguém consegue encontrá-los.</p>
+          <p style="margin-top:10px">Este pacote atualiza o fluxo para <strong>salvar o BSUID em paralelo ao telefone</strong>, sem apagar nada. A partir daí, qualquer contato pode ser localizado pelo novo identificador.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card" style="margin-bottom:0">
+            <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O que é feito</div>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>No início do fluxo, uma ação captura o metadata da mensagem
+                <div class="sub-list"><span>Variável: <code>{{input.message@metadata}}</code></span></div>
+              </span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Um script extrai o BSUID do metadata
+                <div class="sub-list"><span>Campo lido: <code>#wa.bsuid</code></span></div>
+              </span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>O BSUID é gravado no perfil do contato via ação "Definir contato" do Builder</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>O campo de telefone existente é <strong>mantido</strong> — o BSUID é adicionado como campo complementar</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Gestores passam a localizar contatos por BSUID no Blip Desk</span></li>
+            </ul>
+          </div>
+          <div class="card" style="margin-bottom:0;background:var(--red-light);border-color:#FCA5A5">
+            <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Migração retroativa de contatos já existentes sem BSUID<br><span style="font-size:12px;color:var(--muted)">(coberto pelo Pacote 1)</span></span></li>
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Adaptação de fluxos que usam o telefone para busca externa<br><span style="font-size:12px;color:var(--muted)">(coberto pelo Pacote 2)</span></span></li>
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Alteração de qualquer lógica de negócio além do salvamento da variável</span></li>
+            </ul>
+          </div>
+        </div>
+        <button class="btn-next" onclick="goTo('p1')">Pacote 1 →</button>
+      </div>
+    </div>
+
+    <!-- PACOTE 1 -->
+    <div class="page" id="page-p1">
+      <div class="page-hero" style="background:#711cca">
+        <div class="hero-bg-num">1</div>
+        <div class="hero-eyebrow">Pacote 1</div>
+        <div class="hero-title">Mapeamento de base via endpoint PN→BSUID</div>
+        <div class="hero-sub">Enriquecer os registros históricos com BSUID sem precisar disparar mensagens para ninguém.</div>
+      </div>
+      <div class="page-body">
+        <div class="info-row">
+          
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1–2 dias úteis</div><div class="ic-sub">para bases até 20 mil</div></div>
+          <div class="info-cell"><div class="ic-label">Indicado para</div><div class="ic-value">Bases com histórico</div><div class="ic-sub">e CRM integrado</div></div>
+          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Lista de telefones</div><div class="ic-sub">e token API Blip</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ct-dot" style="background:#711cca"></span>O problema que este pacote resolve</div>
+          <p>Sua base tem milhares de registros com telefone, mas sem BSUID. O Pacote 0 começa a salvar o BSUID a partir de agora — mas e quem já está na base e não vai interagir com o bot nos próximos meses?</p>
+          <p style="margin-top:10px">A Blip disponibilizou um <strong>endpoint</strong> (canal de consulta técnica) que permite enviar uma lista de telefones e receber os BSUIDs — <strong>sem disparar mensagem e sem custo por usuário</strong>. Este pacote executa essa consulta para toda a base.</p>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O que é feito</div>
+          <div class="step"><div class="step-num">1</div><div><div class="step-title">Extração da lista de telefones</div><div class="step-text">Os telefones são exportados da base do cliente — CRM, Blip ou planilha.</div></div></div>
+          <div class="step"><div class="step-num">2</div><div><div class="step-title">Consulta em lote ao endpoint da Blip</div><div class="step-text">Um script envia os números em grupos de até 100 por vez (limite da API), com controle automático de velocidade. Em caso de limite atingido (<code>código 38</code>), o script tenta novamente com intervalo progressivo.</div></div></div>
+          <div class="step"><div class="step-num">3</div><div><div class="step-title">Gravação dos BSUIDs retornados</div><div class="step-text">Os dados (BSUID, ID Blip, telefone, data da última interação) são gravados de volta: no Document Store do Blip, no CRM via campo customizado ou em planilha.</div></div></div>
+          <div class="step"><div class="step-num">4</div><div><div class="step-title">Relatório de cobertura</div><div class="step-text">Entrega com total consultado, mapeados com sucesso e números sem retorno — para o cliente saber exatamente qual é o gap restante.</div></div></div>
+        </div>
+        <div class="alert alert-amber">
+          <span class="alert-icon">⚠</span>
+          <div>
+            <div class="alert-title">Limitação importante — leia antes de contratar</div>
+            <div class="alert-text">O endpoint <strong>não consulta a Meta em tempo real</strong>. Ele retorna apenas os relacionamentos que a Blip já recebeu e armazenou. Se um usuário nunca interagiu com o bot desde abril de 2026, o endpoint não vai retornar nada para esse número — sem erro, sem aviso.<br><br>Cobertura esperada: <strong>70–80%</strong> para bases muito ativas. Para bases com muitos inativos, pode ser bem menor. Os números sem retorno são cobertos pelo Pacote 3, se necessário.</div>
+          </div>
+        </div>
+        <div class="card" style="background:var(--red-light);border-color:#FCA5A5">
+          <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
+          <ul class="check-list">
+            <li><span class="ci" style="color:var(--red)">✕</span><span>Disparo ativo para usuários sem retorno no endpoint<br><span style="font-size:12px;color:var(--muted)">(coberto pelo Pacote 3)</span></span></li>
+            <li><span class="ci" style="color:var(--red)">✕</span><span>Atualização de fluxos ou lógicas no Builder<br><span style="font-size:12px;color:var(--muted)">(coberto pelo Pacote 2)</span></span></li>
+            <li><span class="ci" style="color:var(--red)">✕</span><span>De-duplicação de contatos no CRM — apenas enriquecimento de campos</span></li>
+          </ul>
+        </div>
+        <button class="btn-next" onclick="goTo('p2')">Pacote 2 →</button>
+      </div>
+    </div>
+
+    <!-- PACOTE 2 -->
+    <div class="page" id="page-p2">
+      <div class="page-hero" style="background:#7A4F00">
+        <div class="hero-bg-num">2</div>
+        <div class="hero-eyebrow">Pacote 2</div>
+        <div class="hero-title">Adaptação de fluxos e integrações</div>
+        <div class="hero-sub">Refatorar os pontos do fluxo e das conexões externas que dependem do telefone para funcionar.</div>
+      </div>
+      <div class="page-body">
+        <div class="info-row">
+          
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1–3 dias úteis</div><div class="ic-sub">por quantidade de fluxos</div></div>
+          <div class="info-cell"><div class="ic-label">Indicado para</div><div class="ic-value">Captura automática</div><div class="ic-sub">ou lookup externo por telefone</div></div>
+          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Diagnóstico de impacto</div><div class="ic-sub">acesso ao Builder e CRM</div></div>
+        </div>
+        <div class="grid-2">
+          <div class="card" style="margin-bottom:0">
+            <div class="card-title"><span class="ct-dot" style="background:var(--amber)"></span>Nos fluxos (Builder/Studio)</div>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Varredura dos fluxos impactados com base no alerta do portal Blip</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Classificação de cada ponto: <em>bloqueante</em>, <em>degradante</em> ou <em>cosmético</em></span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adição de lógica de fallback:
+                <div class="sub-list">
+                  <span>Telefone existe? → usa normalmente</span>
+                  <span>Não existe? → usa BSUID no lugar</span>
+                  <span>Precisa absolutamente? → pede ao usuário</span>
+                </div>
+              </span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização para variáveis nativas: <code>contact.whatsapp_bsuid</code></span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Remoção de lógicas que leem identidade esperando sempre um número</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Testes simulando usuário sem telefone para validar os fallbacks</span></li>
+            </ul>
+          </div>
+          <div class="card" style="margin-bottom:0">
+            <div class="card-title"><span class="ct-dot" style="background:#711cca"></span>Nas integrações externas (CRM/API)</div>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Mapeamento dos pontos de integração que recebem variáveis de identidade</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Criação do campo <code>whatsapp_bsuid</code> no CRM (RD Station ou equivalente)</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização da lógica de gravação: BSUID salvo no CRM a cada interação</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Atualização da busca: prioriza BSUID, usa telefone como alternativa</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Relatório técnico com todos os pontos alterados, para o time de TI</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card" style="margin-top:16px;background:var(--red-light);border-color:#FCA5A5">
+          <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
+          <div class="grid-2" style="margin-bottom:0">
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Migração de dados históricos no CRM</span></li>
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Desenvolvimento de integrações novas não relacionadas à transição</span></li>
+            </ul>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Suporte além de 5 dias úteis após entrega<br><span style="font-size:12px;color:var(--muted)">(coberto por plano recorrente)</span></span></li>
+            </ul>
+          </div>
+        </div>
+        <button class="btn-next" onclick="goTo('p3')">Pacote 3 →</button>
+      </div>
+    </div>
+
+    <!-- PACOTE 3 -->
+    <div class="page" id="page-p3">
+      <div class="page-hero" style="background:#6B1A1A">
+        <div class="hero-bg-num">3</div>
+        <div class="hero-eyebrow">Pacote 3 · Uso seletivo</div>
+        <div class="hero-title">Disparo cirúrgico para cobertura de gaps</div>
+        <div class="hero-sub">Para segmentos prioritários que o endpoint não conseguiu mapear.</div>
+      </div>
+      <div class="page-body">
+        <div class="info-row">
+          
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1 dia útil</div><div class="ic-sub">para configuração</div></div>
+          <div class="info-cell"><div class="ic-label">Custo extra</div><div class="ic-value" style="color:var(--red)">Variável</div><div class="ic-sub">custo do disparo repassado</div></div>
+          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Pacote 1 executado</div><div class="ic-sub">lista de gaps identificada</div></div>
+        </div>
+        <div class="alert alert-amber">
+          <span class="alert-icon">⚠</span>
+          <div>
+            <div class="alert-title">Quando usar este pacote</div>
+            <div class="alert-text">O Pacote 3 só faz sentido após o Pacote 1. Ele cobre os usuários que o endpoint <em>não</em> retornou — aqueles que não interagiram recentemente e que, por razão crítica de negócio, precisam estar mapeados antes de agosto. Para a maioria dos clientes, Pacotes 0+1+2 já são suficientes.</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="ct-dot" style="background:var(--red)"></span>O problema que este pacote resolve</div>
+          <p>Após o mapeamento em batch, parte da base permanece sem BSUID — usuários inativos que nunca interagiram desde o rollout. A única forma de capturar o BSUID desses usuários é provocar uma interação.</p>
+          <p style="margin-top:10px">Este pacote faz isso de forma inteligente: um disparo com <strong>conteúdo relevante para o usuário</strong> — não uma mensagem técnica — que gera a interação e captura o BSUID automaticamente.</p>
+        </div>
+        <div class="grid-2">
+          <div class="card" style="margin-bottom:0">
+            <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O que é feito</div>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Segmentação dos usuários sem BSUID retornado no Pacote 1</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Definição do conteúdo do disparo com o cliente — precisa ter valor real para o usuário</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Configuração do fluxo de captura: BSUID extraído e gravado automaticamente</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Gravação dos BSUIDs capturados na base (CRM, Document Store ou planilha)</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Relatório pós-disparo: cobertura adicional obtida vs. total enviado</span></li>
+            </ul>
+          </div>
+          <div class="card" style="margin-bottom:0;background:var(--red-light);border-color:#FCA5A5">
+            <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--red)">✕</span><span><strong>Custo das mensagens disparadas</strong> — cobrado por mensagem pela Blip/Meta e repassado ao cliente</span></li>
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Criação de conteúdo de marketing — definido pelo cliente</span></li>
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Cobertura de usuários que bloquearam a empresa</span></li>
+            </ul>
+          </div>
+        </div>
+        <button class="btn-next" onclick="goTo('combos')">Ver combinações recomendadas →</button>
+      </div>
+    </div>
+
+    <!-- COMBOS -->
+    <div class="page" id="page-combos">
+      <div class="page-hero">
+        <div class="hero-eyebrow">Combinações</div>
+        <div class="hero-title">Qual combinação faz sentido para você?</div>
+        <div class="hero-sub">Os pacotes são modulares. A combinação certa depende do seu cenário.</div>
+      </div>
+      <div class="page-body">
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px">
+          <table class="combo-table">
+            <thead>
+              <tr>
+                <th style="width:22%">Perfil do cliente</th>
+                <th style="width:20%">Pacotes recomendados</th>
+                <th style="width:33%">Por que esta combinação</th>
+                <th style="width:25%">O que garante</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pequeno</strong><br><span style="font-size:12px;color:var(--muted)">Fluxo simples, sem CRM integrado, tem time técnico interno</span></td>
+                <td><span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 0</span> <span class="badge badge-navy" style="display:inline-block">Pacote 2</span></td>
+                <td>Atualiza salvamento de variável e adapta os fluxos impactados. Time interno executa o mapeamento com orientação documentada.</td>
+                <td>Novos contatos chegam com BSUID salvo. Fluxos não quebram para usuários sem telefone.</td>
+              </tr>
+              <tr>
+                <td><strong>Médio</strong><br><span style="font-size:12px;color:var(--muted)">CRM integrado, base ativa até 20k, fluxos com lookup externo</span></td>
+                <td><span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 0</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 1</span> <span class="badge badge-navy" style="display:inline-block">Pacote 2</span></td>
+                <td>Cobre salvamento, mapeamento em batch e adaptação de fluxos e integrações. A combinação completa para quem tem CRM e base histórica.</td>
+                <td>Base histórica enriquecida com BSUID. CRM atualizado. Fluxos adaptados com fallback.</td>
+              </tr>
+              <tr>
+                <td><strong>Médio com gap</strong><br><span style="font-size:12px;color:var(--muted)">Base com muitos inativos ou segmento crítico sem cobertura</span></td>
+                <td><span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 0</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 1</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 2</span> <span class="badge badge-navy" style="display:inline-block">Pacote 3</span></td>
+                <td>Acrescenta o disparo cirúrgico para cobrir o gap nos usuários inativos críticos para o negócio.</td>
+                <td>Máxima cobertura possível da base antes de agosto. Custo variável — avaliar ROI por segmento.</td>
+              </tr>
+              <tr>
+                <td><strong>Enterprise</strong><br><span style="font-size:12px;color:var(--muted)">Múltiplos bots, integrações complexas, base grande</span></td>
+                <td><span class="badge badge-mint" style="margin:2px 2px 2px 0;display:inline-block">Todos os pacotes</span><br><span class="badge badge-navy" style="margin-top:6px;display:inline-block">+ Suporte recorrente</span></td>
+                <td>Cobertura total com monitoramento pós-rollout. O suporte recorrente cobre ajustes conforme o rollout avança até agosto e além.</td>
+                <td>Proteção contínua durante todo o período de transição. Revisão trimestral de estratégia.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-mint">
+          <span class="alert-icon">💡</span>
+          <div>
+            <div class="alert-title">Clientes com plano de sustentação vigente</div>
+            <div class="alert-text">Para clientes com plano de sustentação ativo, parte do escopo dos Pacotes 0 e 2 pode ser absorvida na sustentação vigente, a avaliar caso a caso. Consulte para entender o que já está coberto.</div>
+          </div>
+        </div>
+        <button class="btn-next" onclick="goTo('glossary')">Ver glossário →</button>
+      </div>
+    </div>
+
+    <!-- GLOSSARY -->
+    <div class="page" id="page-glossary">
+      <div class="page-hero">
+        <div class="hero-eyebrow">Referência</div>
+        <div class="hero-title">Glossário de termos</div>
+        <div class="hero-sub">Todas as siglas e termos técnicos usados neste guia, explicados em linguagem simples.</div>
+      </div>
+      <div class="page-body">
+        <div class="card" style="padding:0;overflow:hidden">
+          <div class="gloss-item"><div class="gloss-acronym">BSUID</div><div><div class="gloss-full">Business-Scoped User ID</div><div class="gloss-desc">O novo identificador principal de usuários no WhatsApp, criado pela Meta. Cada usuário tem um BSUID diferente para cada empresa com que interage. Ao contrário do telefone, ele é garantido em 100% das interações e não depende de configurações de privacidade.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">GUID</div><div><div class="gloss-full">Globally Unique Identifier — ID Blip interno</div><div class="gloss-desc">Código interno gerado pela Blip para identificar contatos quando o telefone não é compartilhado. Tem 32 caracteres e não pode ser usado para buscar o cliente em sistemas externos. Formato: <code>e4b11bdd-a9bf-46ad...@wa.gw.msging.net</code></div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">PN</div><div><div class="gloss-full">Phone Number — Número de telefone</div><div class="gloss-desc">O identificador tradicional do WhatsApp. Continua existindo, mas deixa de ser garantido para todos os usuários. Quem ativa um @username pode optar por não compartilhá-lo com empresas.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">CRM</div><div><div class="gloss-full">Customer Relationship Management</div><div class="gloss-desc">Sistema de gestão do relacionamento com o cliente. Exemplos: RD Station, HubSpot, Salesforce. É onde ficam os dados dos contatos. Com a transição, precisa ganhar um campo novo para o BSUID.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">API</div><div><div class="gloss-full">Application Programming Interface</div><div class="gloss-desc">Canal de comunicação entre sistemas. Quando o Blip "conversa" com o CRM do cliente, faz isso por uma API. O endpoint PN→BSUID é um recurso da API da Blip que permite consultar BSUIDs em lote.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Endpoint</div><div><div class="gloss-full">Ponto de acesso de uma API</div><div class="gloss-desc">Um endereço específico dentro de uma API que aceita um tipo de consulta. O endpoint PN→BSUID da Blip recebe uma lista de telefones e retorna os BSUIDs conhecidos. É acessado via código, não manualmente.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Metadata</div><div><div class="gloss-full">Metadados — informações extras da mensagem</div><div class="gloss-desc">Cada mensagem que chega no Blip vem com um pacote de informações invisíveis ao usuário. É nesse pacote que o BSUID viaja. O campo específico é <code>#wa.bsuid</code>.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Fallback</div><div><div class="gloss-full">Plano alternativo automático</div><div class="gloss-desc">Quando o sistema tenta usar uma informação e não encontra, o fallback é o comportamento alternativo. Exemplo: "se não existe telefone, usa o BSUID; se não existe BSUID, pede ao usuário". Torna o sistema resiliente à ausência de dados.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Rollout</div><div><div class="gloss-full">Implantação gradual de uma mudança</div><div class="gloss-desc">A Meta não ativa os usernames para todos de uma vez — faz em fases, por região e perfil de usuário. No Brasil, o rollout de usernames começa em agosto de 2026.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Builder / Studio</div><div><div class="gloss-full">Ferramentas de criação de fluxos do Blip</div><div class="gloss-desc">Ambientes dentro da plataforma Blip onde os fluxos de conversa são criados e editados. É onde ficam os blocos, as condições, os scripts e as ações — incluindo a ação "Definir contato" usada para salvar variáveis no perfil do usuário.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Rate limit</div><div><div class="gloss-full">Limite de velocidade de requisições</div><div class="gloss-desc">A API da Blip tem um limite de quantas consultas podem ser feitas por segundo. Se ultrapassado, retorna erro código 38. Por isso o mapeamento em batch exige controle de throughput e retry com intervalo progressivo.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">BM</div><div><div class="gloss-full">Business Manager — Portfólio Empresarial da Meta</div><div class="gloss-desc">Conta empresarial no ecossistema Meta que agrupa páginas, números de WhatsApp e contas de anúncio. O BSUID é definido no nível do BM — por isso o mesmo usuário tem BSUIDs diferentes para empresas em BMs diferentes.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const pages = ['intro','ids','timeline','p0','p1','p2','p3','combos','glossary'];
+function goTo(id) {
+  pages.forEach(p => {
+    document.getElementById('page-' + p).classList.remove('active');
+    var nav = document.getElementById('nav-' + p);
+    if (nav) nav.classList.remove('active');
+  });
+  document.getElementById('page-' + id).classList.add('active');
+  var nav = document.getElementById('nav-' + id);
+  if (nav) nav.classList.add('active');
+  document.getElementById('main').scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
