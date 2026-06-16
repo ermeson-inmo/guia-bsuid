@@ -212,7 +212,7 @@ p + p { margin-top: 10px; }
           <div class="card" style="margin-bottom:0;border-left:4px solid var(--red)">
             <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que pode parar de funcionar</div>
             <ul class="check-list">
-              <li><span class="ci">✕</span><span>Fluxos que capturam o telefone automaticamente — podem receber campo vazio</span></li>
+              <li><span class="ci">✕</span><span>Fluxos que capturam o telefone automaticamente — podem receber o campo <strong>vazio</strong> ou com um <strong>identificador que não representa o número de telefone</strong></span></li>
               <li><span class="ci">✕</span><span>Busca de clientes no CRM por número — pode não encontrar ninguém</span></li>
               <li><span class="ci">✕</span><span>Disparos que dependem do telefone — podem falhar silenciosamente</span></li>
               <li><span class="ci">✕</span><span>Duplicação de contatos — o mesmo cliente aparecendo duas vezes</span></li>
@@ -371,15 +371,15 @@ p + p { margin-top: 10px; }
       </div>
       <div class="page-body">
         <div class="info-row">
-          
-          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">Meio dia por bot</div></div>
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">6 horas por bot</div></div>
           <div class="info-cell"><div class="ic-label">Indicado para</div><div class="ic-value">Todos os clientes</div><div class="ic-sub">com fluxo ativo no Blip</div></div>
           <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Acesso ao Builder</div><div class="ic-sub">ambiente do bot</div></div>
+          <div class="info-cell"><div class="ic-label">Investimento</div><div class="ic-value" style="color:var(--navy)">A consultar</div></div>
         </div>
         <div class="card">
           <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O problema que este pacote resolve</div>
-          <p>Hoje, o fluxo salva o <strong>telefone</strong> no perfil do contato para que gestores possam encontrar clientes pelo número. Com a mudança, usuários sem telefone terão um campo vazio — e ninguém consegue encontrá-los.</p>
-          <p style="margin-top:10px">Este pacote atualiza o fluxo para <strong>salvar o BSUID em paralelo ao telefone</strong>, sem apagar nada. A partir daí, qualquer contato pode ser localizado pelo novo identificador.</p>
+          <p>Hoje existe um script padrão que converte o campo de identidade do contato em número de telefone e o salva no perfil. Com a mudança da Meta, esse campo pode chegar <strong>vazio</strong> ou conter um <strong>identificador que não é telefone</strong> — como um GUID de 32 caracteres. Sem atualização, o script vai salvar esse valor inválido no lugar do número, corrompendo os dados de todos os contatos que não compartilharem o telefone.</p>
+          <p style="margin-top:10px">Este pacote substitui esse script pelo novo campo nativo da Meta (<code>waId</code>), que traz o telefone quando disponível e deixa o campo vazio quando não. A partir daí, o dado salvo é sempre válido — telefone real ou campo em branco.</p>
         </div>
         <div class="grid-2">
           <div class="card" style="margin-bottom:0">
@@ -393,7 +393,7 @@ p + p { margin-top: 10px; }
               </span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>O BSUID é gravado no perfil do contato via ação "Definir contato" do Builder</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>O campo de telefone existente é <strong>mantido</strong> — o BSUID é adicionado como campo complementar</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Gestores passam a localizar contatos por BSUID no Blip Desk</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Gestores passam a realizar <strong>disparos de mensagens por BSUID</strong> diretamente no Blip Desk — a busca de contatos por BSUID ainda está pendente de implementação nativa pela Blip</span></li>
             </ul>
           </div>
           <div class="card" style="margin-bottom:0;background:var(--red-light);border-color:#FCA5A5">
@@ -420,9 +420,10 @@ p + p { margin-top: 10px; }
       <div class="page-body">
         <div class="info-row">
           
-          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1–2 dias úteis</div><div class="ic-sub">para bases até 20 mil</div></div>
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">5 dias úteis</div><div class="ic-sub">para bases até 20 mil</div></div>
           <div class="info-cell"><div class="ic-label">Indicado para</div><div class="ic-value">Bases com histórico</div><div class="ic-sub">e CRM integrado</div></div>
           <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Lista de telefones</div><div class="ic-sub">e token API Blip</div></div>
+          <div class="info-cell"><div class="ic-label">Investimento</div><div class="ic-value" style="color:var(--navy)">A consultar</div></div>
         </div>
         <div class="card">
           <div class="card-title"><span class="ct-dot" style="background:#711cca"></span>O problema que este pacote resolve</div>
@@ -434,13 +435,13 @@ p + p { margin-top: 10px; }
           <div class="step"><div class="step-num">1</div><div><div class="step-title">Extração da lista de telefones</div><div class="step-text">Os telefones são exportados da base do cliente — CRM, Blip ou planilha.</div></div></div>
           <div class="step"><div class="step-num">2</div><div><div class="step-title">Consulta em lote ao endpoint da Blip</div><div class="step-text">Um script envia os números em grupos de até 100 por vez (limite da API), com controle automático de velocidade. Em caso de limite atingido (<code>código 38</code>), o script tenta novamente com intervalo progressivo.</div></div></div>
           <div class="step"><div class="step-num">3</div><div><div class="step-title">Gravação dos BSUIDs retornados</div><div class="step-text">Os dados (BSUID, ID Blip, telefone, data da última interação) são gravados de volta: no Document Store do Blip, no CRM via campo customizado ou em planilha.</div></div></div>
-          <div class="step"><div class="step-num">4</div><div><div class="step-title">Relatório de cobertura</div><div class="step-text">Entrega com total consultado, mapeados com sucesso e números sem retorno — para o cliente saber exatamente qual é o gap restante.</div></div></div>
+          <div class="step"><div class="step-num">4</div><div><div class="step-title">Relatório de cobertura</div><div class="step-text">Entrega via <strong>Google Sheets</strong> com total consultado, mapeados com sucesso e números sem BSUID retornado — para o cliente saber exatamente qual é o gap e poder utilizá-lo como base para o Pacote 3.</div></div></div>
         </div>
         <div class="alert alert-amber">
           <span class="alert-icon">⚠</span>
           <div>
-            <div class="alert-title">Limitação importante — leia antes de contratar</div>
-            <div class="alert-text">O endpoint <strong>não consulta a Meta em tempo real</strong>. Ele retorna apenas os relacionamentos que a Blip já recebeu e armazenou. Se um usuário nunca interagiu com o bot desde abril de 2026, o endpoint não vai retornar nada para esse número — sem erro, sem aviso.<br><br>Cobertura esperada: <strong>70–80%</strong> para bases muito ativas. Para bases com muitos inativos, pode ser bem menor. Os números sem retorno são cobertos pelo Pacote 3, se necessário.</div>
+            <div class="alert-title">Limitações importantes — leia antes de contratar</div>
+            <div class="alert-text">O endpoint <strong>não consulta a Meta em tempo real</strong>. Ele retorna apenas os relacionamentos que a Blip já recebeu e armazenou. Se um usuário nunca interagiu com o bot desde abril de 2026, o endpoint não vai retornar nada para esse número — sem erro, sem aviso.<br><br>Cobertura esperada: <strong>70–80%</strong> para bases muito ativas. Para bases com muitos inativos, pode ser bem menor. Os números sem retorno são cobertos pelo Pacote 3, se necessário.<br><br><strong>Requisitos obrigatórios do cliente:</strong> o campo de BSUID já deve ter sido criado no CRM antes da execução. O sistema do cliente precisa ter <strong>API REST</strong> disponível — tanto para consulta por telefone (GET) quanto para atualização do novo campo (POST). CRMs sem API não são compatíveis com este pacote.</div>
           </div>
         </div>
         <div class="card" style="background:var(--red-light);border-color:#FCA5A5">
@@ -466,9 +467,10 @@ p + p { margin-top: 10px; }
       <div class="page-body">
         <div class="info-row">
           
-          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1–3 dias úteis</div><div class="ic-sub">por quantidade de fluxos</div></div>
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">5 dias úteis</div><div class="ic-sub">por quantidade de fluxos</div></div>
           <div class="info-cell"><div class="ic-label">Indicado para</div><div class="ic-value">Captura automática</div><div class="ic-sub">ou lookup externo por telefone</div></div>
-          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Diagnóstico de impacto</div><div class="ic-sub">acesso ao Builder e CRM</div></div>
+          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Pacote 0 concluído</div><div class="ic-sub">acesso ao Builder e CRM</div></div>
+          <div class="info-cell"><div class="ic-label">Investimento</div><div class="ic-value" style="color:var(--navy)">A consultar</div></div>
         </div>
         <div class="grid-2">
           <div class="card" style="margin-bottom:0">
@@ -528,7 +530,8 @@ p + p { margin-top: 10px; }
           
           <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1 dia útil</div><div class="ic-sub">para configuração</div></div>
           <div class="info-cell"><div class="ic-label">Custo extra</div><div class="ic-value" style="color:var(--red)">Variável</div><div class="ic-sub">custo do disparo repassado</div></div>
-          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Pacote 1 executado</div><div class="ic-sub">lista de gaps identificada</div></div>
+          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Pacotes 0, 1 e 2</div><div class="ic-sub">todos concluídos</div></div>
+          <div class="info-cell"><div class="ic-label">Investimento</div><div class="ic-value" style="color:var(--navy)">A consultar</div></div>
         </div>
         <div class="alert alert-amber">
           <span class="alert-icon">⚠</span>
@@ -548,7 +551,8 @@ p + p { margin-top: 10px; }
             <ul class="check-list">
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Segmentação dos usuários sem BSUID retornado no Pacote 1</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Definição do conteúdo do disparo com o cliente — precisa ter valor real para o usuário</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Configuração do fluxo de captura: BSUID extraído e gravado automaticamente</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Upload da lista de contatos sem BSUID (via Google Sheets) diretamente no Growth do Blip para disparo manual</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Configuração do fluxo de captura: BSUID extraído e gravado automaticamente quando o usuário responde</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Gravação dos BSUIDs capturados na base (CRM, Document Store ou planilha)</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Relatório pós-disparo: cobertura adicional obtida vs. total enviado</span></li>
             </ul>
@@ -586,39 +590,28 @@ p + p { margin-top: 10px; }
             </thead>
             <tbody>
               <tr>
-                <td><strong>Pequeno</strong><br><span style="font-size:12px;color:var(--muted)">Fluxo simples, sem CRM integrado, tem time técnico interno</span></td>
+                <td><strong>Sem CRM integrado</strong><br><span style="font-size:12px;color:var(--muted)">Fluxo simples, sem integração externa ativa</span></td>
                 <td><span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 0</span> <span class="badge badge-navy" style="display:inline-block">Pacote 2</span></td>
                 <td>Atualiza salvamento de variável e adapta os fluxos impactados. Time interno executa o mapeamento com orientação documentada.</td>
                 <td>Novos contatos chegam com BSUID salvo. Fluxos não quebram para usuários sem telefone.</td>
               </tr>
               <tr>
-                <td><strong>Médio</strong><br><span style="font-size:12px;color:var(--muted)">CRM integrado, base ativa até 20k, fluxos com lookup externo</span></td>
+                <td><strong>Com CRM integrado</strong><br><span style="font-size:12px;color:var(--muted)">Base ativa, fluxos com lookup externo no CRM</span></td>
                 <td><span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 0</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 1</span> <span class="badge badge-navy" style="display:inline-block">Pacote 2</span></td>
                 <td>Cobre salvamento, mapeamento em batch e adaptação de fluxos e integrações. A combinação completa para quem tem CRM e base histórica.</td>
                 <td>Base histórica enriquecida com BSUID. CRM atualizado. Fluxos adaptados com fallback.</td>
               </tr>
               <tr>
-                <td><strong>Médio com gap</strong><br><span style="font-size:12px;color:var(--muted)">Base com muitos inativos ou segmento crítico sem cobertura</span></td>
+                <td><strong>Com CRM e base inativa</strong><br><span style="font-size:12px;color:var(--muted)">Base com muitos inativos ou segmento crítico sem cobertura pelo endpoint</span></td>
                 <td><span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 0</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 1</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 2</span> <span class="badge badge-navy" style="display:inline-block">Pacote 3</span></td>
                 <td>Acrescenta o disparo cirúrgico para cobrir o gap nos usuários inativos críticos para o negócio.</td>
                 <td>Máxima cobertura possível da base antes de agosto. Custo variável — avaliar ROI por segmento.</td>
               </tr>
-              <tr>
-                <td><strong>Enterprise</strong><br><span style="font-size:12px;color:var(--muted)">Múltiplos bots, integrações complexas, base grande</span></td>
-                <td><span class="badge badge-mint" style="margin:2px 2px 2px 0;display:inline-block">Todos os pacotes</span><br><span class="badge badge-navy" style="margin-top:6px;display:inline-block">+ Suporte recorrente</span></td>
-                <td>Cobertura total com monitoramento pós-rollout. O suporte recorrente cobre ajustes conforme o rollout avança até agosto e além.</td>
-                <td>Proteção contínua durante todo o período de transição. Revisão trimestral de estratégia.</td>
-              </tr>
+              
             </tbody>
           </table>
         </div>
-        <div class="alert alert-mint">
-          <span class="alert-icon">💡</span>
-          <div>
-            <div class="alert-title">Clientes com plano de sustentação vigente</div>
-            <div class="alert-text">Para clientes com plano de sustentação ativo, parte do escopo dos Pacotes 0 e 2 pode ser absorvida na sustentação vigente, a avaliar caso a caso. Consulte para entender o que já está coberto.</div>
-          </div>
-        </div>
+        
         <button class="btn-next" onclick="goTo('glossary')">Ver glossário →</button>
       </div>
     </div>
