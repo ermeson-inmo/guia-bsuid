@@ -172,6 +172,12 @@ p + p { margin-top: 10px; }
   <!-- SIDEBAR -->
   <nav id="sidebar">
     <div class="sidebar-logo">
+      <div style="margin-bottom:12px;opacity:0.95"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 409.04 127.82" width="88" height="27" aria-label="Inmo">
+  <rect fill="#fff" y="1.48" width="25" height="124"/>
+  <polygon fill="#fff" points="113 83.19 64.83 1.48 39 1.48 39 125.48 64 125.48 64 43.85 112.17 125.48 138 125.48 138 1.48 113 1.48 113 83.19"/>
+  <path fill="#fff" d="M264.14,11a37.25,37.25,0,0,0-11.85-7.93A36.87,36.87,0,0,0,213,9.73a36.29,36.29,0,0,0-11.5-7.11A37.15,37.15,0,0,0,153.9,22.79,36.29,36.29,0,0,0,151,37.22v88.26h25V37.22a12.16,12.16,0,0,1,3.63-8.75,12.31,12.31,0,0,1,4-2.62,13.11,13.11,0,0,1,9.8,0,12.31,12.31,0,0,1,4,2.62A12.16,12.16,0,0,1,201,37.22v88.26h24V37.22a12.2,12.2,0,0,1,3.62-8.75,12.67,12.67,0,0,1,17.68,0A12.86,12.86,0,0,1,249,32.4a11.62,11.62,0,0,1,1,4.82v88.26h25V37.22a36.29,36.29,0,0,0-2.9-14.43A37,37,0,0,0,264.14,11Z"/>
+  <path fill="#fff" d="M406.75,46.89A64.08,64.08,0,0,0,377.41,8.71a64.59,64.59,0,0,0-15.26-6.43,64.18,64.18,0,0,0-33.91,0A65.48,65.48,0,0,0,313,8.71a63.29,63.29,0,0,0-13,10,64.84,64.84,0,0,0-10,12.93,63.18,63.18,0,0,0-8.75,32.23A62.51,62.51,0,0,0,283.5,80.8a64.34,64.34,0,0,0,44.74,44.73,63.61,63.61,0,0,0,49.17-6.46,65.23,65.23,0,0,0,12.92-10,63.34,63.34,0,0,0,10-13,65,65,0,0,0,6.42-15.26,63.91,63.91,0,0,0,0-33.91ZM362.5,99c-.67.33-1.34.65-2,1a39.41,39.41,0,0,1-30.64,0,39.82,39.82,0,0,1-20.94-20.9,37.6,37.6,0,0,1-3.11-15.22,38.14,38.14,0,0,1,3.11-15.29,39.34,39.34,0,0,1,8.44-12.5,40.25,40.25,0,0,1,12.5-8.4,39.29,39.29,0,0,1,30.64,0,39.12,39.12,0,0,1,20.9,20.9,38.14,38.14,0,0,1,3.1,15.29,37.6,37.6,0,0,1-3.1,15.22A41.76,41.76,0,0,1,378.2,85l9,18.76Z"/>
+</svg></div>
       <div class="logo-title">Guia de Transição</div>
       <div class="logo-sub">WhatsApp · Meta · Blip</div>
     </div>
@@ -431,7 +437,7 @@ p + p { margin-top: 10px; }
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Consulta da base existente do cliente para identificar o BSUID de cada contato já cadastrado</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Enriquecimento dos registros no CRM com o novo identificador, sem necessidade de disparar mensagens ou interromper operações</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Entrega de relatório com o resultado do mapeamento: quem foi identificado e quem permanece sem BSUID — servindo de base para o Pacote 3, se necessário</span></li>
-            </ul></div>
+            </ul>
         </div>
         <div class="alert alert-amber">
           <span class="alert-icon">⚠</span>
@@ -486,18 +492,54 @@ p + p { margin-top: 10px; }
             </ul>
           </div>
         </div>
+                <div class="card" style="margin-top:16px;background:var(--red-light);border-color:#FCA5A5">
+          <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
+          <div class="grid-2" style="margin-bottom:0">
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Migração de dados históricos no CRM</span></li>
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Desenvolvimento de integrações novas não relacionadas à transição</span></li>
+            </ul>
+            <ul class="check-list">
+              <li><span class="ci" style="color:var(--red)">✕</span><span>Suporte além de 5 dias úteis após entrega<br><span style="font-size:12px;color:var(--muted)">(coberto por plano recorrente)</span></span></li>
+            </ul>
+          </div>
+        </div>
+                <button class="btn-next" onclick="goTo('p3')">Pacote 3 →</button>
+      </div>
+    </div>
+
+
+    <!-- PACOTE 3 -->
+    <div class="page" id="page-p3">
+      <div class="page-hero" style="background:#6B1A1A">
+        <div class="hero-bg-num">3</div>
+        <div class="hero-eyebrow">Pacote 3 · Uso seletivo</div>
+        <div class="hero-title">Disparo cirúrgico para cobertura de gaps</div>
+        <div class="hero-sub">Para segmentos prioritários que o endpoint não conseguiu mapear.</div>
+      </div>
+      <div class="page-body">
+
+        <div class="info-row">
+          <div class="info-cell"><div class="ic-label">Tempo estimado</div><div class="ic-value">1 dia útil</div><div class="ic-sub">para configuração</div></div>
+          <div class="info-cell"><div class="ic-label">Custo extra</div><div class="ic-value" style="color:var(--red)">Variável</div><div class="ic-sub">custo do disparo repassado</div></div>
+          <div class="info-cell"><div class="ic-label">Pré-requisito</div><div class="ic-value">Pacotes 0, 1 e 2</div><div class="ic-sub">todos concluídos</div></div>
+          <div class="info-cell"><div class="ic-label">Investimento</div><div class="ic-value" style="color:var(--navy)">A consultar</div></div>
+        </div>
+
         <div class="alert alert-amber">
           <span class="alert-icon">⚠</span>
           <div>
             <div class="alert-title">Quando usar este pacote</div>
-            <div class="alert-text">O Pacote 3 só faz sentido após o Pacote 1. Ele cobre os usuários que o endpoint <em>não</em> retornou — aqueles que não interagiram recentemente e que, por razão crítica de negócio, precisam estar mapeados antes de agosto. Para a maioria dos clientes, Pacotes 0+1+2 já são suficientes.</div>
+            <div class="alert-text">O Pacote 3 só faz sentido após os Pacotes 1 e 2 concluídos. Ele cobre os usuários que o endpoint <em>não</em> retornou — aqueles que não interagiram recentemente e que, por razão crítica de negócio, precisam estar mapeados antes de agosto. Para a maioria dos clientes, Pacotes 0+1+2 já são suficientes.</div>
           </div>
         </div>
+
         <div class="card">
           <div class="card-title"><span class="ct-dot" style="background:var(--red)"></span>O problema que este pacote resolve</div>
-          <p>Após o mapeamento em batch, parte da base permanece sem BSUID — usuários inativos que nunca interagiram desde o rollout. A única forma de capturar o BSUID desses usuários é provocar uma interação.</p>
+          <p>Após o mapeamento em batch, parte da base permanece sem BSUID — usuários inativos que nunca interagiram desde o início do rollout. A única forma de capturar o BSUID desses usuários é provocar uma interação.</p>
           <p style="margin-top:10px">Este pacote faz isso de forma inteligente: um disparo com <strong>conteúdo relevante para o usuário</strong> — não uma mensagem técnica — que gera a interação e captura o BSUID automaticamente.</p>
         </div>
+
         <div class="grid-2">
           <div class="card" style="margin-bottom:0">
             <div class="card-title"><span class="ct-dot" style="background:var(--mint)"></span>O que é feito</div>
@@ -511,12 +553,13 @@ p + p { margin-top: 10px; }
           <div class="card" style="margin-bottom:0;background:var(--red-light);border-color:#FCA5A5">
             <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
             <ul class="check-list">
-              <li><span class="ci" style="color:var(--red)">✕</span><span><strong>Custo das mensagens disparadas</strong> — cobrado por mensagem pela Blip/Meta e repassado ao cliente</span></li>
+              <li><span class="ci" style="color:var(--red)">✕</span><span><strong>Custo das mensagens disparadas</strong> — cobrado por mensagem pela Blip/Meta e repassado diretamente ao cliente</span></li>
               <li><span class="ci" style="color:var(--red)">✕</span><span>Criação de conteúdo de marketing — definido pelo cliente</span></li>
               <li><span class="ci" style="color:var(--red)">✕</span><span>Cobertura de usuários que bloquearam a empresa</span></li>
             </ul>
           </div>
         </div>
+
         <button class="btn-next" onclick="goTo('combos')">Ver combinações recomendadas →</button>
       </div>
     </div>
