@@ -152,25 +152,103 @@ code { background: #EEF2FF; color: #3B3F8C; font-family: 'Courier New', monospac
 p { font-size: 14px; color: var(--slate); line-height: 1.6; }
 p + p { margin-top: 10px; }
 
-@media (max-width: 700px) {
-  #sidebar { width: 50px; }
-  .sidebar-logo .logo-title, .sidebar-logo .logo-sub, .nav-section-label, .nav-item span:not(.nav-num):not(.nav-dot) { display: none; }
+/* MOBILE HEADER + DRAWER (hidden on desktop) */
+#mobile-header { display: none; }
+#mobile-overlay { display: none; }
+#drawer-close { display: none; }
+
+@media (max-width: 600px) {
+  #app { display: block; height: auto; overflow: visible; }
+
+  /* Hide desktop sidebar entirely, replace with drawer behavior */
+  #sidebar {
+    position: fixed; top: 0; left: 0; height: 100vh; width: 270px;
+    max-width: 80vw; z-index: 1001;
+    transform: translateX(-100%); transition: transform 0.25s ease;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.25);
+  }
+  #sidebar.open { transform: translateX(0); }
+
+  /* Mobile top header bar */
+  #mobile-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--navy); padding: 14px 16px;
+    position: sticky; top: 0; z-index: 999;
+  }
+  #mobile-header .mh-logo { display: flex; align-items: center; gap: 10px; }
+  #mobile-header .mh-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.02em; }
+  #menu-toggle {
+    background: rgba(255,255,255,0.1); border: none; border-radius: 8px;
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+  }
+  #menu-toggle span { display: block; width: 18px; height: 2px; background: #fff; border-radius: 1px; position: relative; }
+  #menu-toggle span::before, #menu-toggle span::after { content: ''; position: absolute; width: 18px; height: 2px; background: #fff; border-radius: 1px; left: 0; }
+  #menu-toggle span::before { top: -6px; }
+  #menu-toggle span::after { top: 6px; }
+
+  /* Overlay behind drawer */
+  #mobile-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  }
+  #mobile-overlay.open { display: block; opacity: 1; pointer-events: auto; }
+
+  /* Drawer close button */
+  #drawer-close {
+    display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; background: rgba(255,255,255,0.08); border: none;
+    border-radius: 8px; color: #fff; font-size: 18px; cursor: pointer; position: absolute;
+    top: 16px; right: 14px; z-index: 2;
+  }
+
+  #main { width: 100%; overflow-y: visible; }
+
   .page-body { padding: 20px 16px 40px; }
   .page-hero { padding: 24px 16px 20px; }
   .hero-title { font-size: 22px; }
+  .hero-bg-num { display: none; }
   .grid-2 { grid-template-columns: 1fr; }
   .info-row { flex-direction: column; }
   .info-cell { border-right: none; border-bottom: 1px solid var(--border); }
+  .info-cell:last-child { border-bottom: none; }
   .combo-table { font-size: 12px; }
   .gloss-item { flex-direction: column; gap: 8px; }
+
+  /* Tables become horizontally scrollable rather than squeezed */
+  .id-table, .combo-table { display: block; overflow-x: auto; white-space: nowrap; }
+  .id-table thead, .combo-table thead { display: table-header-group; }
+  .id-table tbody, .combo-table tbody { display: table-row-group; }
+  .id-table tr, .combo-table tr { display: table-row; }
+  .id-table td, .id-table th, .combo-table td, .combo-table th { white-space: normal; min-width: 160px; }
+
+  .btn-next { width: 100%; text-align: center; }
 }
 </style>
 </head>
 <body>
 <div id="app">
 
+  <!-- MOBILE HEADER (visível apenas em telas pequenas) -->
+  <div id="mobile-header">
+    <div class="mh-logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 409.04 127.82" width="58" height="18" aria-label="Inmo">
+        <rect fill="#fff" y="1.48" width="25" height="124"/>
+        <polygon fill="#fff" points="113 83.19 64.83 1.48 39 1.48 39 125.48 64 125.48 64 43.85 112.17 125.48 138 125.48 138 1.48 113 1.48 113 83.19"/>
+        <path fill="#fff" d="M264.14,11a37.25,37.25,0,0,0-11.85-7.93A36.87,36.87,0,0,0,213,9.73a36.29,36.29,0,0,0-11.5-7.11A37.15,37.15,0,0,0,153.9,22.79,36.29,36.29,0,0,0,151,37.22v88.26h25V37.22a12.16,12.16,0,0,1,3.63-8.75,12.31,12.31,0,0,1,4-2.62,13.11,13.11,0,0,1,9.8,0,12.31,12.31,0,0,1,4,2.62A12.16,12.16,0,0,1,201,37.22v88.26h24V37.22a12.2,12.2,0,0,1,3.62-8.75,12.67,12.67,0,0,1,17.68,0A12.86,12.86,0,0,1,249,32.4a11.62,11.62,0,0,1,1,4.82v88.26h25V37.22a36.29,36.29,0,0,0-2.9-14.43A37,37,0,0,0,264.14,11Z"/>
+        <path fill="#fff" d="M406.75,46.89A64.08,64.08,0,0,0,377.41,8.71a64.59,64.59,0,0,0-15.26-6.43,64.18,64.18,0,0,0-33.91,0A65.48,65.48,0,0,0,313,8.71a63.29,63.29,0,0,0-13,10,64.84,64.84,0,0,0-10,12.93,63.18,63.18,0,0,0-8.75,32.23A62.51,62.51,0,0,0,283.5,80.8a64.34,64.34,0,0,0,44.74,44.73,63.61,63.61,0,0,0,49.17-6.46,65.23,65.23,0,0,0,12.92-10,63.34,63.34,0,0,0,10-13,65,65,0,0,0,6.42-15.26,63.91,63.91,0,0,0,0-33.91ZM362.5,99c-.67.33-1.34.65-2,1a39.41,39.41,0,0,1-30.64,0,39.82,39.82,0,0,1-20.94-20.9,37.6,37.6,0,0,1-3.11-15.22,38.14,38.14,0,0,1,3.11-15.29,39.34,39.34,0,0,1,8.44-12.5,40.25,40.25,0,0,1,12.5-8.4,39.29,39.29,0,0,1,30.64,0,39.12,39.12,0,0,1,20.9,20.9,38.14,38.14,0,0,1,3.1,15.29,37.6,37.6,0,0,1-3.1,15.22A41.76,41.76,0,0,1,378.2,85l9,18.76Z"/>
+      </svg>
+      <span class="mh-title">Guia de Transição</span>
+    </div>
+    <button id="menu-toggle" onclick="toggleMenu()" aria-label="Abrir menu"><span></span></button>
+  </div>
+
+  <!-- OVERLAY (fecha o drawer ao clicar fora) -->
+  <div id="mobile-overlay" onclick="closeMenu()"></div>
+
   <!-- SIDEBAR -->
   <nav id="sidebar">
+    <button id="drawer-close" onclick="closeMenu()" aria-label="Fechar menu">✕</button>
     <div class="sidebar-logo">
       <div style="margin-bottom:12px;opacity:0.95"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 409.04 127.82" width="88" height="27" aria-label="Inmo">
   <rect fill="#fff" y="1.48" width="25" height="124"/>
@@ -656,6 +734,29 @@ p + p { margin-top: 10px; }
 
 <script>
 const pages = ['intro','ids','timeline','p0','p1','p2','p3','combos','glossary'];
+
+function isMobile() {
+  return window.innerWidth <= 600;
+}
+
+function openMenu() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+}
+
+function closeMenu() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+}
+
+function toggleMenu() {
+  if (document.getElementById('sidebar').classList.contains('open')) {
+    closeMenu();
+  } else {
+    openMenu();
+  }
+}
+
 function goTo(id) {
   pages.forEach(p => {
     document.getElementById('page-' + p).classList.remove('active');
@@ -665,7 +766,13 @@ function goTo(id) {
   document.getElementById('page-' + id).classList.add('active');
   var nav = document.getElementById('nav-' + id);
   if (nav) nav.classList.add('active');
-  document.getElementById('main').scrollTo({ top: 0, behavior: 'smooth' });
+
+  if (isMobile()) {
+    closeMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    document.getElementById('main').scrollTo({ top: 0, behavior: 'smooth' });
+  }
 }
 </script>
 </body>
