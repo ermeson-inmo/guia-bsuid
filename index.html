@@ -229,7 +229,7 @@ p + p { margin-top: 10px; }
             <ul class="check-list">
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Adotar o <strong>BSUID</strong> como identificador principal — presente em 100% das interações</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Mapear a base existente enquanto telefone e BSUID ainda chegam juntos</span></li>
-              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adaptar fluxos e integrações com lógica de fallback antes de agosto</span></li>
+              <li><span class="ci" style="color:var(--mint)">✓</span><span>Adaptar fluxos e integrações com lógica de fallback antes que a adoção de usernames avance no Brasil</span></li>
               <li><span class="ci" style="color:var(--mint)">✓</span><span>Salvar o BSUID no perfil de cada contato para consultas futuras</span></li>
             </ul>
           </div>
@@ -271,7 +271,7 @@ p + p { margin-top: 10px; }
                 <td>O número de celular do usuário, como sempre foi usado até hoje.</td>
                 <td><span class="badge badge-amber">Opcional</span><br><span style="font-size:12px;color:var(--muted);margin-top:4px;display:block">Depende da privacidade do usuário</span></td>
                 <td>Identificação do cliente, envio de mensagens, busca no CRM.</td>
-                <td>Pode deixar de ser compartilhado. Não pode ser o único identificador a partir de agosto.</td>
+                <td>Pode deixar de ser compartilhado conforme a adoção de usernames avança. Não pode mais ser o único identificador do contato.</td>
               </tr>
               <tr>
                 <td><div class="id-name">BSUID</div><div class="id-acronym">Business-Scoped User ID</div><span class="badge badge-mint" style="margin-top:6px;display:inline-block">Novo primário ✦</span></td>
@@ -328,36 +328,36 @@ p + p { margin-top: 10px; }
             <div class="tl-item">
               <div class="tl-dot" style="background:var(--mint);color:#fff">✓</div>
               <div>
-                <div class="tl-date">Abril — Junho 2026 · <span style="color:var(--mint)">Janela atual</span></div>
-                <div class="tl-title">BSUIDs chegam junto com o telefone</div>
-                <div class="tl-desc">Este é o momento mais valioso para mapear sua base. Telefone e BSUID chegam juntos nas interações — dá para construir a equivalência sem custo adicional.</div>
+                <div class="tl-date">1º de Junho 2026 · <span style="color:var(--mint)">Em vigor</span></div>
+                <div class="tl-title">Novos contatos sem telefone passam a usar GUID</div>
+                <div class="tl-desc">Para contatos <strong>novos</strong> que não compartilharem o telefone, o campo de identidade do Blip passa a trazer um GUID no lugar do número. Contatos que já existiam na plataforma antes dessa data não são afetados e continuam no formato baseado em telefone.</div>
                 <div class="badge-row"><span class="badge badge-mint">Mapear base agora</span><span class="badge badge-navy">Salvar BSUID no contato</span></div>
               </div>
             </div>
             <div class="tl-item">
-              <div class="tl-dot" style="background:var(--red);color:#fff;font-size:11px">!</div>
+              <div class="tl-dot" style="background:var(--amber);color:#fff;font-size:11px">!</div>
               <div>
-                <div class="tl-date">1º de Junho 2026 · <span style="color:var(--red)">Data já passou</span></div>
-                <div class="tl-title">Data de virada da Blip — suporte nativo ao GUID</div>
-                <div class="tl-desc">A plataforma Blip já suporta criação de contatos via GUID sem dependência do telefone. Fluxos que leem o campo de identidade esperando sempre um número podem já estar quebrando silenciosamente.</div>
-                <div class="badge-row"><span class="badge badge-red">Prazo crítico atingido</span><span class="badge badge-amber">Revisar fluxos urgente</span></div>
+                <div class="tl-date">Rollout gradual · Iniciado por países específicos</div>
+                <div class="tl-title">Adoção de usernames começa fora do Brasil</div>
+                <div class="tl-desc">A Meta está liberando a funcionalidade de forma gradual, começando por países específicos antes de chegar ao Brasil. Enquanto isso, telefone e BSUID ainda chegam juntos na maior parte das interações — esta é a janela mais segura para mapear a base.</div>
+                <div class="badge-row"><span class="badge badge-amber">Janela de coexistência</span></div>
               </div>
             </div>
             <div class="tl-item">
               <div class="tl-dot" style="background:var(--navy-mid);color:#fff;font-size:12px">→</div>
               <div>
-                <div class="tl-date">Agosto 2026</div>
-                <div class="tl-title">Usernames disponíveis globalmente</div>
-                <div class="tl-desc">A adoção de @usernames no Brasil escala. A proporção de usuários sem telefone cresce significativamente. Fluxos e integrações não adaptados começam a apresentar falhas em volume crescente.</div>
-                <div class="badge-row"><span class="badge badge-gray">Meta final de adaptação</span></div>
+                <div class="tl-date">Ao longo de 2026 · Datas sujeitas a mudança pela Meta</div>
+                <div class="tl-title">Expansão da adoção de usernames e disponibilidade global</div>
+                <div class="tl-desc">Conforme o cronograma compartilhado pela Meta e pela Blip, a adoção avança progressivamente até a disponibilidade global da funcionalidade. Esse roadmap pode sofrer alterações ao longo do rollout — vale acompanhar as atualizações oficiais.</div>
+                <div class="badge-row"><span class="badge badge-gray">Roadmap pode mudar</span></div>
               </div>
             </div>
             <div class="tl-item">
               <div class="tl-dot" style="background:#7A8899;color:#fff;font-size:14px">∞</div>
               <div>
-                <div class="tl-date">Pós-agosto · Monitoramento contínuo</div>
-                <div class="tl-title">Rollout estabiliza — base continua mudando</div>
-                <div class="tl-desc">Mesmo após agosto, a proporção de usuários sem telefone continuará crescendo gradualmente. Sistemas precisam de monitoramento para garantir que novos fluxos criados não reincidam nos padrões antigos.</div>
+                <div class="tl-date">Durante toda a transição · Monitoramento contínuo</div>
+                <div class="tl-title">O risco mais perigoso não gera erro visível</div>
+                <div class="tl-desc">Sistemas podem continuar funcionando normalmente enquanto a integridade da identidade se degrada silenciosamente — contatos duplicados, histórico fragmentado. Quanto mais cedo o mapeamento for feito, maior a chance de preservar continuidade e histórico.</div>
                 <div class="badge-row"><span class="badge badge-gray">Suporte recorrente recomendado</span></div>
               </div>
             </div>
@@ -443,7 +443,7 @@ p + p { margin-top: 10px; }
           <span class="alert-icon">⚠</span>
           <div>
             <div class="alert-title">Limitações importantes — leia antes de contratar</div>
-            <div class="alert-text">O endpoint <strong>não consulta a Meta em tempo real</strong>. Ele retorna apenas os relacionamentos que a Blip já recebeu e armazenou. Se um usuário nunca interagiu com o bot desde abril de 2026, o endpoint não vai retornar nada para esse número — sem erro, sem aviso.<br><br>Cobertura esperada: <strong>70–80%</strong> para bases muito ativas. Para bases com muitos inativos, pode ser bem menor. Os números sem retorno são cobertos pelo Pacote 3, se necessário.<br><br><strong>Requisitos obrigatórios do cliente:</strong> o campo de BSUID já deve ter sido criado no CRM antes da execução. O sistema do cliente precisa ter <strong>API REST</strong> disponível — tanto para consulta por telefone (GET) quanto para atualização do novo campo (POST). CRMs sem API não são compatíveis com este pacote.</div>
+            <div class="alert-text">O endpoint <strong>não consulta a Meta em tempo real</strong>. Ele retorna apenas relacionamentos entre telefone e BSUID que a Blip já recebeu e armazenou anteriormente. Se a Blip ainda não recebeu o BSUID de um determinado número, o endpoint não vai retornar nada para ele — isso não significa erro ou que o contato deixou de existir, apenas que esse relacionamento ainda não é conhecido.<br><br>A cobertura real só pode ser confirmada após a execução do mapeamento na base específica do cliente — depende diretamente do quanto a base interagiu com o bot desde o início do rollout. Números sem retorno podem ser cobertos pelo Pacote 3, se necessário.<br><br><strong>Requisitos obrigatórios do cliente:</strong> o campo de BSUID já deve ter sido criado no CRM antes da execução. O sistema do cliente precisa ter <strong>API REST</strong> disponível — tanto para consulta por telefone (GET) quanto para atualização do novo campo (POST). CRMs sem API não são compatíveis com este pacote.</div>
           </div>
         </div>
         <div class="card" style="background:var(--red-light);border-color:#FCA5A5">
@@ -492,7 +492,15 @@ p + p { margin-top: 10px; }
             </ul>
           </div>
         </div>
-                <div class="card" style="margin-top:16px;background:var(--red-light);border-color:#FCA5A5">
+                <div class="alert alert-mint" style="margin-top:16px">
+          <span class="alert-icon">💡</span>
+          <div>
+            <div class="alert-title">Recurso oficial da Meta para solicitar o telefone</div>
+            <div class="alert-text">A Meta disponibiliza um botão oficial de template (<code>"Compartilhar contato"</code>) que permite ao usuário autorizar o compartilhamento do telefone com um toque, sem digitação manual. É a forma mais confiável de obter o número quando ele é estritamente necessário. A adaptação dos fluxos pode incorporar esse botão nos pontos identificados como críticos.</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:16px;background:var(--red-light);border-color:#FCA5A5">
           <div class="card-title" style="color:var(--red)"><span class="ct-dot" style="background:var(--red)"></span>O que NÃO está incluído</div>
           <div class="grid-2" style="margin-bottom:0">
             <ul class="check-list">
@@ -530,7 +538,15 @@ p + p { margin-top: 10px; }
           <span class="alert-icon">⚠</span>
           <div>
             <div class="alert-title">Quando usar este pacote</div>
-            <div class="alert-text">O Pacote 3 só faz sentido após os Pacotes 1 e 2 concluídos. Ele cobre os usuários que o endpoint <em>não</em> retornou — aqueles que não interagiram recentemente e que, por razão crítica de negócio, precisam estar mapeados antes de agosto. Para a maioria dos clientes, Pacotes 0+1+2 já são suficientes.</div>
+            <div class="alert-text">O Pacote 3 só faz sentido após os Pacotes 1 e 2 concluídos. Ele cobre os usuários que o endpoint <em>não</em> retornou — aqueles que não interagiram recentemente e que, por razão crítica de negócio, precisam estar mapeados o quanto antes. Para a maioria dos clientes, Pacotes 0+1+2 já são suficientes.</div>
+          </div>
+        </div>
+
+        <div class="alert alert-red">
+          <span class="alert-icon">⚠</span>
+          <div>
+            <div class="alert-title">Risco de duplicação no disparo</div>
+            <div class="alert-text">Se o disparo for feito pelo telefone para um contato que já possui BSUID vinculado na base, existe risco de gerar um registro duplicado em vez de atualizar o contato existente. Por isso a segmentação cuidadosa — feita a partir do resultado do Pacote 1 — é parte essencial deste pacote, não um detalhe operacional.</div>
           </div>
         </div>
 
@@ -599,7 +615,7 @@ p + p { margin-top: 10px; }
                 <td><strong>Com CRM e base inativa</strong><br><span style="font-size:12px;color:var(--muted)">Base com muitos inativos ou segmento crítico sem cobertura pelo endpoint</span></td>
                 <td><span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 0</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 1</span> <span class="badge badge-navy" style="margin:2px 2px 2px 0;display:inline-block">Pacote 2</span> <span class="badge badge-navy" style="display:inline-block">Pacote 3</span></td>
                 <td>Acrescenta o disparo cirúrgico para cobrir o gap nos usuários inativos críticos para o negócio.</td>
-                <td>Máxima cobertura possível da base antes de agosto. Custo variável — avaliar ROI por segmento.</td>
+                <td>Máxima cobertura possível da base antes que o rollout avance. Custo variável — avaliar ROI por segmento.</td>
               </tr>
               
             </tbody>
@@ -627,7 +643,7 @@ p + p { margin-top: 10px; }
           <div class="gloss-item"><div class="gloss-acronym">Endpoint</div><div><div class="gloss-full">Ponto de acesso de uma API</div><div class="gloss-desc">Um endereço específico dentro de uma API que aceita um tipo de consulta. O endpoint PN→BSUID da Blip recebe uma lista de telefones e retorna os BSUIDs conhecidos. É acessado via código, não manualmente.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">Metadata</div><div><div class="gloss-full">Metadados — informações extras da mensagem</div><div class="gloss-desc">Cada mensagem que chega no Blip vem com um pacote de informações invisíveis ao usuário. É nesse pacote que o BSUID viaja. O campo específico é <code>#wa.bsuid</code>.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">Fallback</div><div><div class="gloss-full">Plano alternativo automático</div><div class="gloss-desc">Quando o sistema tenta usar uma informação e não encontra, o fallback é o comportamento alternativo. Exemplo: "se não existe telefone, usa o BSUID; se não existe BSUID, pede ao usuário". Torna o sistema resiliente à ausência de dados.</div></div></div>
-          <div class="gloss-item"><div class="gloss-acronym">Rollout</div><div><div class="gloss-full">Implantação gradual de uma mudança</div><div class="gloss-desc">A Meta não ativa os usernames para todos de uma vez — faz em fases, por região e perfil de usuário. No Brasil, o rollout de usernames começa em agosto de 2026.</div></div></div>
+          <div class="gloss-item"><div class="gloss-acronym">Rollout</div><div><div class="gloss-full">Implantação gradual de uma mudança</div><div class="gloss-desc">A Meta não ativa os usernames para todos de uma vez — faz em fases, começando por países específicos antes de chegar ao Brasil. As datas exatas fazem parte de um roadmap que pode sofrer alterações ao longo do processo.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">Builder / Studio</div><div><div class="gloss-full">Ferramentas de criação de fluxos do Blip</div><div class="gloss-desc">Ambientes dentro da plataforma Blip onde os fluxos de conversa são criados e editados. É onde ficam os blocos, as condições, os scripts e as ações — incluindo a ação "Definir contato" usada para salvar variáveis no perfil do usuário.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">Rate limit</div><div><div class="gloss-full">Limite de velocidade de requisições</div><div class="gloss-desc">A API da Blip tem um limite de quantas consultas podem ser feitas por segundo. Quando esse limite é atingido, as requisições precisam ser repetidas com um intervalo de espera. Por isso o mapeamento em lote exige controle de cadência nas chamadas.</div></div></div>
           <div class="gloss-item"><div class="gloss-acronym">BM</div><div><div class="gloss-full">Business Manager — Portfólio Empresarial da Meta</div><div class="gloss-desc">Conta empresarial no ecossistema Meta que agrupa páginas, números de WhatsApp e contas de anúncio. O BSUID é definido no nível do BM — por isso o mesmo usuário tem BSUIDs diferentes para empresas em BMs diferentes.</div></div></div>
